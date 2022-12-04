@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/helpjuice_test/static/css/main.aa3397d0.css",
+    "main.js": "/helpjuice_test/static/js/main.7314134e.js",
+    "static/js/787.b57b9135.chunk.js": "/helpjuice_test/static/js/787.b57b9135.chunk.js",
+    "index.html": "/helpjuice_test/index.html",
+    "main.aa3397d0.css.map": "/helpjuice_test/static/css/main.aa3397d0.css.map",
+    "main.7314134e.js.map": "/helpjuice_test/static/js/main.7314134e.js.map",
+    "787.b57b9135.chunk.js.map": "/helpjuice_test/static/js/787.b57b9135.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aa3397d0.css",
+    "static/js/main.7314134e.js"
+  ]
+}
