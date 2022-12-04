@@ -25,6 +25,7 @@
       "react-app/jest"
     ]
   },
+  "homepage":"http://jenadiusnicholaus.github.io/notiion_clone_test",
   "browserslist": {
     "production": [
       ">0.2%",
