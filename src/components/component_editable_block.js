@@ -8,17 +8,11 @@ import ComponentSelectableMenu from './component_selectable_menu'
 class ComponentEditableBlock extends React.Component {
   constructor(props) {
       super(props);
-
-    this.openSelectMenuHandler = this.openSelectMenuHandler.bind(this);
-    this.closeSelectMenuHandler = this.closeSelectMenuHandler.bind(this);
-    this.tagSelectionHandler = this.tagSelectionHandler.bind(this);
-    this.onKeyUpHandler = this.onKeyUpHandler.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
     this.contentEditable = React.createRef();
-    this.onKeyDownHandler = this.onKeyDownHandler.bind(this);
     this.state = {
       htmlBackup: null,
       html: "",
+      // Set the p tag as initial block tag
       tag: "p",
       previousKey: "",
       selectMenuIsOpen: false,
@@ -30,16 +24,16 @@ class ComponentEditableBlock extends React.Component {
 
   }
 
-componentDidMount() {
+componentDidMount = () => {
     this.setState({ html: this.props.html, tag: this.props.tag });
   }
     
- onChangeHandler(e) {
+ onContentEdibleChange = (e) => {
     this.setState({ html: e.target.value });
     console.log(e.target.value)
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate = (prevProps, prevState) => {
     const htmlChanged = prevState.html !== this.state.html;
     const tagChanged = prevState.tag !== this.state.tag;
     if (htmlChanged || tagChanged) {
@@ -51,19 +45,21 @@ componentDidMount() {
     }
   }
 
-onKeyDownHandler(e) {
+onKeyDownHandler = (e) => {
     if (e.key === "/") {
       this.setState({ htmlBackup: this.state.html });
     }
+  
+    //adds a new block
     if (e.key === "Enter") {
-      if (this.state.previousKey !== "Shift") {
         e.preventDefault();
         this.props.addBlock({
           id: this.props.id,
           ref: this.contentEditable.current
         });
-      }
     }
+  
+  // romeve a blank Block
     if (e.key === "Backspace" && !this.state.html) {
       e.preventDefault();
       this.props.deleteBlock({
@@ -73,35 +69,36 @@ onKeyDownHandler(e) {
     }
     this.setState({ previousKey: e.key });
 }
-    //=============== selected menu
-onKeyUpHandler(e) {
+  
+//=============== select menu =============
+onKeyUpHandler = (e)=> {
     if (e.key === "/") {
-      this.openSelectMenuHandler();
+      this.openBlocType();
     }
   }
 
-  openSelectMenuHandler() {
+  openBlocType = () => {
     const { x, y } = determinCaretPossion();
     this.setState({
       selectMenuIsOpen: true,
       selectMenuPosition: { x, y }
     });
-    document.addEventListener("click", this.closeSelectMenuHandler);
+    document.addEventListener("click", this.closeBlockTypeSheet);
   }
 
-  closeSelectMenuHandler() {
+  closeBlockTypeSheet =() =>{
     this.setState({
       htmlBackup: null,
       selectMenuIsOpen: false,
       selectMenuPosition: { x: null, y: null }
     });
-    document.removeEventListener("click", this.closeSelectMenuHandler);
+    document.removeEventListener("click", this.closeBlockTypeSheet);
   }
 
-  tagSelectionHandler(tag) {
+  blockTagSelectionHandler =(tag)=> {
     this.setState({ tag: tag, html: this.state.htmlBackup }, () => {
       setCaretToEnd(this.contentEditable.current);
-      this.closeSelectMenuHandler();
+      this.closeBlockTypeSheet();
     });
   }
 
@@ -112,21 +109,18 @@ onKeyUpHandler(e) {
             <ComponentSelectableMenu
             className ='SelectableMenu'
             position={this.state.selectMenuPosition}
-            onSelect={this.tagSelectionHandler}
-            close={this.closeSelectMenuHandler}
+            onSelect={this.blockTagSelectionHandler}
+            close={this.closeBlockTypeSheet}
           />
               )}
               <ContentEditable
             className="Block"
-            placeHolder='Enter text'
             innerRef={this.contentEditable}
             html={this.state.html}
             tagName={this.state.tag}
-            onChange={this.onChangeHandler}
+            onChange={this. onContentEdibleChange}
             onKeyDown={this.onKeyDownHandler}
             onKeyUp={this.onKeyUpHandler}
-
-
         />
         </>
         

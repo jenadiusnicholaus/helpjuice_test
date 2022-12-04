@@ -1,21 +1,20 @@
 import React from 'react';
 import { setCaretToEnd } from '../utilities/utils.js';
 import ComponentEditableBlock from './component_editable_block.js';
-import { uid } from '../utilities/utils.js'
+import { blockUniqueId } from '../utilities/utils.js';
 import '../styles/editable_page_style.css'
+import initialBlock from '../utilities/initialBlock.js'
 
-const initialBlock = { id: uid(), html: "", tag: "p" };
 
 class ComponentEditablePage extends React.Component {
    constructor(props) {
     super(props);
-    this.updatePageHandler = this.updatePageHandler.bind(this);
-    this.addBlockHandler = this.addBlockHandler.bind(this);
-    this.deleteBlockHandler = this.deleteBlockHandler.bind(this);
-    this.state = { blocks: [initialBlock] };
+     this.state = {
+      blocks: [initialBlock]
+     };
   }
 
-  updatePageHandler(updatedBlock) {
+  updatePage = (updatedBlock)=> {
     const blocks = this.state.blocks;
     const index = blocks.map((b) => b.id).indexOf(updatedBlock.id);
     const updatedBlocks = [...blocks];
@@ -27,8 +26,8 @@ class ComponentEditablePage extends React.Component {
     this.setState({ blocks: updatedBlocks });
   }
 
-  addBlockHandler(currentBlock) {
-    const newBlock = { id: uid(), html: "", tag: "p" };
+  addBlock = (currentBlock) => {
+    const newBlock = initialBlock
     const blocks = this.state.blocks;
     const index = blocks.map((b) => b.id).indexOf(currentBlock.id);
     const updatedBlocks = [...blocks];
@@ -38,7 +37,7 @@ class ComponentEditablePage extends React.Component {
     });
   }
 
-  deleteBlockHandler(currentBlock) {
+  deleteBlock = (currentBlock)=> {
     const previousBlock = currentBlock.ref.previousElementSibling;
     if (previousBlock) {
       const blocks = this.state.blocks;
@@ -62,9 +61,9 @@ class ComponentEditablePage extends React.Component {
               id={block.id}
               tag={block.tag}
               html={block.html}
-              updatePage={this.updatePageHandler}
-              addBlock={this.addBlockHandler}
-              deleteBlock={this.deleteBlockHandler}
+              updatePage={this.updatePage}
+              addBlock={this.addBlock}
+              deleteBlock={this.deleteBlock}
             />
           );
         })}
